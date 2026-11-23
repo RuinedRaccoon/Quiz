@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="hu" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RGB vagy JÓZAN ÉSZ? – Interaktív Marketing & Gamer Kérdőív</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QRCode.js a helyi és élő QR-kód generáláshoz -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            background-color: #090d16;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Üveghatású kártyák */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            border-radius: 1.25rem;
+            box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        /* RGB animált szegély */
+        .rgb-border {
+            position: relative;
+        }
+        .rgb-border::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 1.35rem;
+            background: linear-gradient(45deg, #38bdf8, #818cf8, #f43f5e, #fbbf24, #34d399, #38bdf8);
+            background-size: 300% 300%;
+            z-index: -1;
+            animation: rgbShift 6s ease infinite;
+            opacity: 0.75;
+        }
+
+        @keyframes rgbShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Mém tipográfia */
+        .meme-impact {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 3px 6px rgba(0,0,0,0.8);
+        }
+
+        /* Vizuális mém panel stílusok */
+        .meme-panel {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.85));
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 1rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 25px -12px rgba(0, 0, 0, 0.75);
+        }
+
+        /* Opció gomb animáció */
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+            background-color: rgba(30, 41, 59, 0.95);
+        }
+        .option-btn.selected {
+            border-color: #38bdf8;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.22), rgba(99, 102, 241, 0.22));
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+        }
+
+        /* QR kód fehér keret */
+        #qrcode img, #qrcode canvas {
+            margin: 0 auto;
+            border-radius: 0.75rem;
+        }
+
+        /* Finom megjelenés */
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-sky-500 selection:text-slate-950">
+
+    <!-- Háttér fények -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 -right-32 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Felső Navigáció -->
+    <header class="relative z-20 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+            <button onclick="goHome()" class="flex items-center gap-2.5 text-left group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-sky-500/20 group-hover:scale-105 transition">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <div>
+                    <span class="font-display font-black text-base sm:text-lg text-white tracking-tight block leading-none">RGB vagy JÓZAN ÉSZ?</span>
+                    <span class="text-[11px] text-sky-400 font-semibold">DE-GTK • Marketing Kvíz</span>
+                </div>
+            </button>
+
+            <div class="flex items-center gap-2">
+                <button onclick="openStatsModal()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition" title="Élő eredmények megtekintése">
+                    <i class="fa-solid fa-chart-simple text-indigo-400"></i>
+                    <span class="hidden sm:inline">Előadói statisztika</span>
+                    <span id="header-response-badge" class="bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded-md text-xs font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fő Tartalom Konténer -->
+    <main class="relative z-10 flex-grow flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-3xl">
+
+            <!-- 1. KEZDŐKÉPERNYŐ -->
+            <section id="screen-start" class="glass-card rgb-border p-6 sm:p-10 text-center space-y-6 fade-in">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs sm:text-sm font-bold">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Interaktív Gamer & Marketing Teszt • 11 kérdés</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+                    RGB vagy <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-rose-400">JÓZAN ÉSZ?</span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                    Ez nem egy száraz ZH! Töltsd ki 2 perc alatt, mondd el, mivel játszol a legtöbbet, és kiderül, hogy te vagy-e a <strong class="text-sky-300">„Minden forintot elverek ROG logóra”</strong> típus, vagy a <strong class="text-emerald-300">„Csak működjön és ne gyulladjon ki”</strong> mester!
+                </p>
+
+                <!-- Gyors előnézeti kártyák -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-left pt-2">
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-face-laugh-squint text-2xl text-amber-400"></i>
+                        <div>
+                            <div class="font-bold text-white text-sm">Laza, poénos stílus</div>
+                            <div class="text-xs text-slate-400">Semmi unalmas elmélet</div>
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-pen-to-square text-2xl text-sky-400"></i>
+                        <div>
+                            <div class="font-bold text-white text-sm">Feleletmegadós is</div>
+                            <div class="text-xs text-slate-400">Írd be a kedvenc játékod!</div>
+                        </div>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center gap-3">
+                        <i class="fa-solid fa-trophy text-2xl text-indigo-400"></i>
+                        <div>
+                            <div class="font-bold text-white text-sm">Személyiség-profil</div>
+                            <div class="text-xs text-slate-400">Azonnali kiértékelés</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black text-lg shadow-lg shadow-sky-500/25 flex items-center justify-center gap-3 transition transform hover:scale-[1.02] active:scale-95">
+                        <span>Kérdőív indítása</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 2. KVÍZ KÉPERNYŐ -->
+            <section id="screen-quiz" class="hidden space-y-5 fade-in">
+                <!-- Haladásjelző -->
+                <div class="glass-card p-4 flex flex-col gap-2">
+                    <div class="flex justify-between items-center text-xs sm:text-sm font-bold">
+                        <span id="question-category" class="text-sky-400 uppercase tracking-wider">1. rész • Bemelegítő</span>
+                        <span id="question-counter" class="text-slate-300">1 / 11 kérdés</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="quiz-progress" class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 transition-all duration-300 rounded-full" style="width: 9%;"></div>
+                    </div>
+                </div>
+
+                <!-- Kérdés Kártya -->
+                <div id="question-container" class="glass-card p-6 sm:p-8 space-y-6">
+                    <!-- Dinamikusan töltődik JS-ből -->
+                </div>
+
+                <!-- Navigációs gombok -->
+                <div class="flex items-center justify-between gap-4">
+                    <button id="btn-prev" onclick="prevQuestion()" class="px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold flex items-center gap-2 transition disabled:opacity-40 disabled:pointer-events-none">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        <span>Előző</span>
+                    </button>
+
+                    <button id="btn-next" onclick="nextQuestion()" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-black flex items-center gap-2 shadow-lg shadow-sky-500/20 transition">
+                        <span id="btn-next-text">Következő</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. EREDMÉNY KÉPERNYŐ -->
+            <section id="screen-result" class="hidden space-y-6 fade-in">
+                <!-- Fő eredmény kártya -->
+                <div class="glass-card rgb-border p-6 sm:p-9 text-center space-y-5">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs sm:text-sm font-bold">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>Kiértékelés kész! Íme a gamer-marketing profilod:</span>
+                    </div>
+
+                    <div id="result-icon" class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 border border-sky-400/40 flex items-center justify-center text-4xl text-sky-400 shadow-lg">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-slate-400 font-bold">A te archetípusod:</span>
+                        <h2 id="result-title" class="text-3xl sm:text-4xl font-black text-white mt-1">ASUS ROG Presztízsvadász</h2>
+                    </div>
+
+                    <p id="result-desc" class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                        Számodra a PC nem csak egy munkaeszköz, hanem státuszszimbólum! Ha világít, ha ASUS ROG, és ha 240 FPS-sel fut, akkor a pénztárcád fájdalma csak másodlagos.
+                    </p>
+
+                    <!-- Marketing Tudás Pontszám -->
+                    <div class="max-w-md mx-auto p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80 flex items-center justify-between">
+                        <div class="text-left">
+                            <div class="text-xs text-slate-400 font-bold uppercase">Marketinges Kvíz Pontszám</div>
+                            <div id="quiz-score-comment" class="text-sm text-sky-300 font-semibold mt-0.5">BCG-mátrix és árképzés mester!</div>
+                        </div>
+                        <div class="text-3xl font-black text-white bg-sky-500/20 border border-sky-400/40 px-4 py-2 rounded-xl">
+                            <span id="quiz-score-val">3</span> / 3
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saját feleletmegadós válaszok összegzése -->
+                <div class="glass-card p-6 sm:p-8 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="text-xl font-black text-white flex items-center gap-2">
+                            <i class="fa-solid fa-quote-left text-sky-400"></i>
+                            <span>A te egyedi válaszaid (Ellenőrizve)</span>
+                        </h3>
+                        <span id="validation-summary-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                            Szöveges mezők ellenőrizve
+                        </span>
+                    </div>
+                    <div id="custom-answers-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dinamikusan töltődik -->
+                    </div>
+                </div>
+
+                <!-- ÚJ: A TÖBBIEK VÁLASZAI (NÉVTELENÜL) SZEKCIÓ -->
+                <div id="community-answers-section" class="glass-card p-6 sm:p-8 space-y-5 border-indigo-500/40">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                        <div>
+                            <span class="text-xs uppercase tracking-wider text-indigo-400 font-bold">Közösségi névtelen fal</span>
+                            <h3 class="text-2xl font-black text-white flex items-center gap-2 mt-0.5">
+                                <i class="fa-solid fa-users-viewfinder text-indigo-400"></i>
+                                <span>A többiek válaszai (névtelenül)</span>
+                            </h3>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5" id="community-filter-pills">
+                            <button type="button" onclick="setCommunityFilter('all')" data-filter="all" class="comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-500 text-white transition">Mind</button>
+                            <button type="button" onclick="setCommunityFilter('game')" data-filter="game" class="comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Játékok</button>
+                            <button type="button" onclick="setCommunityFilter('story')" data-filter="story" class="comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Gép-sztorik</button>
+                            <button type="button" onclick="setCommunityFilter('marketing')" data-filter="marketing" class="comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Marketing</button>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-400">
+                        Itt kizárólag névtelenül jelennek meg a beküldött feleletmegadós válaszok (név és személyes adat nélkül).
+                    </p>
+
+                    <div id="community-answers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                        <!-- Dinamikusan töltődik -->
+                    </div>
+                </div>
+
+                <!-- Megosztás / Újrakezdés -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="copyResultText()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-500/20 transition">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Eredmény másolása (Megosztáshoz)</span>
+                    </button>
+                    <button onclick="openStatsModal()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 font-bold flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Többiek válaszai</span>
+                    </button>
+                    <button onclick="restartQuiz()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Újra kitöltöm</span>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Lábléc -->
+    <footer class="relative z-10 border-t border-slate-800/60 py-4 text-center text-xs text-slate-500">
+        Debreceni Egyetem GTK • Marketing Alapjai • Készült a PC Eszközök és Kiegészítők Marketingje előadáshoz
+    </footer>
+
+    <!-- MODÁLIS ABLAK: QR-KÓD GENERÁTOR -->
+    <div id="modal-qr" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+        <div class="glass-card max-w-md w-full p-6 sm:p-8 text-center space-y-5 relative fade-in border-sky-500/50">
+            <button onclick="closeQrModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 text-slate-300 hover:text-white flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 text-sky-400 text-xs font-bold">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>Olvasd be a telefonoddal!</span>
+            </div>
+
+            <h3 class="text-2xl font-black text-white">Kérdőív QR-kód</h3>
+
+            <!-- QR Kód konténer -->
+            <div class="bg-white p-4 rounded-2xl inline-block shadow-xl mx-auto">
+                <div id="qrcode"></div>
+            </div>
+
+            <!-- Aktuális URL megjelenítése és másolása -->
+            <div class="space-y-2">
+                <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs text-slate-300">
+                    <input id="qr-url-input" type="text" readonly class="bg-transparent w-full outline-none font-mono text-sky-300 px-1" value="">
+                    <button onclick="copyUrl()" class="px-3 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold shrink-0 transition">
+                        Másolás
+                    </button>
+                </div>
+
+                <!-- Figyelmeztetés, ha helyi fájlról vagy iframe-ből fut -->
+                <div id="local-url-warning" class="hidden text-left p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
+                    <strong>Tipp az előadáshoz:</strong> Jelenleg helyi/előnézeti címről fut az oldal. Ha letöltöd ezt a HTML fájlt és feltöltöd egy ingyenes tárhelyre (pl. <strong>tiiny.host</strong>, <strong>Netlify Drop</strong> vagy <strong>GitHub Pages</strong>), a QR-kód automatikusan a publikus linket mutatja, így a teremben mindenki be tudja olvasni!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODÁLIS ABLAK: ELŐADÓI STATISZTIKA -->
+    <div id="modal-stats" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/85 backdrop-blur-md p-4">
+        <div class="glass-card max-w-2xl w-full p-6 sm:p-8 space-y-5 relative fade-in max-h-[90vh] overflow-y-auto border-indigo-500/50">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div>
+                    <span class="text-xs text-indigo-400 font-bold uppercase tracking-wider">Élő összesítő</span>
+                    <h3 class="text-2xl font-black text-white">Előadói Statisztika (<span id="stats-total-count">0</span> kitöltő)</h3>
+                </div>
+                <button onclick="closeStatsModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-500 text-slate-300 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="stats-content" class="space-y-6">
+                <!-- Dinamikusan generált statisztikák -->
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 flex justify-between items-center">
+                <button onclick="clearStats()" class="text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-trash"></i> Statisztika nullázása
+                </button>
+                <button onclick="closeStatsModal()" class="px-5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold">
+                    Bezárás
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Értesítő Toast (alert() helyett) -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden items-center gap-2.5 px-5 py-3 rounded-2xl bg-slate-900 border border-sky-400/50 text-white text-sm font-bold shadow-2xl">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-msg">Üzenet</span>
+    </div>
+
+    <script>
+        // ==========================================
+        // KÉRDÉSEK ÉS VIZUÁLIS MÉM-PANELEK (SVG/HTML)
+        // ==========================================
+        const questions = [
+            {
+                id: 'q1_game',
+                category: '1. rész • Mindennapi gépészkedés (Feleletmegadós)',
+                title: 'Melyik játékkal játszol a legtöbbet mostanában?',
+                subtitle: 'Írd be bátran akkor is, ha „csak az Excel / TikTok / YouTube / Baldurs Gate / CS2” megy! (Opcionális)',
+                type: 'text',
+                requiredText: false,
+                placeholder: 'Pl. Counter-Strike 2, League of Legends, Minecraft, Excel-táblázat...',
+                meme: `
+                    <div class="meme-panel p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <svg class="w-16 h-16 shrink-0 rounded-xl bg-slate-900 border border-sky-400/30 p-1.5" viewBox="0 0 64 64" fill="none">
+                                <rect x="8" y="18" width="48" height="28" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5"/>
+                                <path d="M18 32H26M22 28V36" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+                                <circle cx="41" cy="29" r="2.5" fill="#fbbf24"/>
+                                <circle cx="47" cy="35" r="2.5" fill="#34d399"/>
+                                <path d="M12 12L20 16M52 12L44 16" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-sky-400">„Csak még egy kör”</div>
+                                <div class="meme-impact text-white text-sm sm:text-base">22:00: „Kikapcsolom, korán kelek.”</div>
+                                <div class="text-xs text-amber-300 font-semibold mt-0.5">01:47: „Miért van már világos odakint a madaraknak?!”</div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-lg bg-indigo-500/20 border border-indigo-400/30 text-xs font-mono text-indigo-200 shrink-0">#MégEgyMeccs</span>
+                    </div>
+                `
+            },
+            {
+                id: 'q2_hours',
+                category: '1. rész • Mindennapi gépészkedés',
+                title: 'Átlagosan hány órát ülsz gép előtt egy átlagos napon?',
+                subtitle: 'Őszintén – itt nem pontozzuk a D-vitaminszintet!',
+                type: 'single',
+                options: [
+                    { value: 'low', label: '0–1 óra (Csak megnézem az üzeneteket, aztán lépek)', icon: 'fa-leaf', archetype: 'proart' },
+                    { value: 'mid', label: '2–4 óra (Normális, kiegyensúlyozott tempó)', icon: 'fa-clock', archetype: 'tuf' },
+                    { value: 'high', label: '4+ óra (A szék már felvette a formám, a napfény egy mítosz)', icon: 'fa-headset', archetype: 'rog' },
+                    { value: 'chaos', label: 'Kiszámíthatatlan: hol 0 perc, hol 9 óra egyhuzamban', icon: 'fa-shuffle', archetype: 'chaos' }
+                ]
+            },
+            {
+                id: 'q3_noise_rgb',
+                category: '1. rész • Mindennapi gépészkedés',
+                title: 'Hangban és látványban hol tart a géped jelenleg?',
+                subtitle: 'Válaszd ki azt, amelyik leginkább leírja a vasat az asztalodon vagy az öledben!',
+                type: 'single',
+                options: [
+                    { value: 'boeing', label: 'Úgy zúg terhelés alatt, mint egy felszálló Boeing 747 (fülvédő ajánlott)', icon: 'fa-plane-departure', archetype: 'boeing' },
+                    { value: 'rgb_tree', label: 'Több az RGB fény benne, mint egy karácsonyfán – látszik a Holdról is', icon: 'fa-wand-magic-sparkles', archetype: 'rog' },
+                    { value: 'silent_pro', label: 'Csendes, letisztult, felesleges villogás nélkül – teszi a dolgát', icon: 'fa-volume-xmark', archetype: 'proart' },
+                    { value: 'egg_fryer', label: 'Laptopon / öreg gépen játszom: már majdnem lehet rajta tükörtojást sütni', icon: 'fa-temperature-high', archetype: 'boeing' }
+                ],
+                meme: `
+                    <div class="meme-panel p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <svg class="w-16 h-16 shrink-0 rounded-xl bg-slate-900 border border-rose-400/30 p-1.5" viewBox="0 0 64 64" fill="none">
+                                <circle cx="32" cy="34" r="16" stroke="#f97316" stroke-width="2.5" stroke-dasharray="6 4"/>
+                                <path d="M22 34C22 28.477 26.477 24 32 24C37.523 24 42 28.477 42 34" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M12 16L20 22M52 16L44 22M32 8V15" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-rose-400">Hűtés vs. Valóság</div>
+                                <div class="meme-impact text-orange-300 text-sm sm:text-base">VENTILÁTOR: 100% RPM • FÜL: ZÚG</div>
+                                <div class="text-xs text-slate-300 mt-0.5">Szobahőmérséklet télen: +27 °C. Fűtésszámla: megköszönte.</div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-lg bg-rose-500/20 border border-rose-400/30 text-xs font-mono text-rose-200 shrink-0">92 °C HOTSPOT</span>
+                    </div>
+                `
+            },
+            {
+                id: 'q4_excuse',
+                category: '1. rész • Mindennapi gépészkedés',
+                title: 'Mi a leggyakoribb kifogásod, ha valami balul sül el gép előtt vagy játékban?',
+                subtitle: 'Legyünk őszinték: sosem a felhasználó hibázik, ugye?',
+                type: 'single',
+                options: [
+                    { value: 'lag', label: '„Laggolt a szerver / magas volt a ping!” (Közben csak rosszul céloztam)', icon: 'fa-wifi', archetype: 'meme_excuse' },
+                    { value: 'mousepad', label: '„Rossz az egérpadom / csúszik a kezem / 60 Hz-es a kijelző!”', icon: 'fa-computer-mouse', archetype: 'meme_excuse' },
+                    { value: 'honest', label: '„Én voltam a béna, nem tagadom – legalább vicces volt”', icon: 'fa-face-laugh-beam', archetype: 'budget' },
+                    { value: 'random_bug', label: '„Valami random Windows frissítés vagy bug kavart be a semmiből!”', icon: 'fa-bug', archetype: 'chaos' }
+                ]
+            },
+            {
+                id: 'q5_cables',
+                category: '1. rész • Mindennapi gépészkedés (Feleletmegadós)',
+                title: 'Hogy néz ki a kábelrengeteg és az asztalod a gép mögött?',
+                subtitle: 'Írd le pár szóval – vagy hagyd ki, ha nem akarsz róla beszélni (nem sértődünk meg).',
+                type: 'text',
+                requiredText: false,
+                placeholder: 'Pl. Spagetti-dzsungel, szép kábelcsatorna, 3 üres kávésbögre és egy egér...',
+                meme: `
+                    <div class="meme-panel p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <svg class="w-16 h-16 shrink-0 rounded-xl bg-slate-900 border border-amber-400/30 p-1.5" viewBox="0 0 64 64" fill="none">
+                                <path d="M10 22C22 10 26 44 38 24C46 12 50 42 56 30" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M12 42C24 52 30 18 42 40C48 50 52 24 56 38" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                            <div>
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Elöl vs. Hátul</div>
+                                <div class="meme-impact text-sky-300 text-sm sm:text-base">ASZTAL ELŐL: MINIMALISTA DESIGN</div>
+                                <div class="text-xs text-rose-300 font-semibold mt-0.5">ASZTAL HÁTUL: 14 KÁBEL, 2 ELOSZTÓ, EGY CSOMÓ PORCICA</div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-lg bg-amber-500/20 border border-amber-400/30 text-xs font-mono text-amber-200 shrink-0">#SpaghettiSetup</span>
+                    </div>
+                `
+            },
+            {
+                id: 'q6_million',
+                category: '1. rész • Álom-költségvetés',
+                title: 'Ha holnap nyernél 1 millió forintot, és CSAK PC-re költhetnéd, mi lenne az első dolog?',
+                subtitle: 'Válassz egyet, vagy írd be a saját ötletedet!',
+                type: 'single_with_other',
+                options: [
+                    { value: 'gpu', label: 'Brutál ASUS ROG csúcskártya (hogy lássam a tükörképem a sugárkövetésben)', icon: 'fa-microchip', archetype: 'rog' },
+                    { value: 'oled', label: 'OLED gamer monitor (mert a fekete legyen tényleg fekete, ne szürke!)', icon: 'fa-desktop', archetype: 'proart' },
+                    { value: 'value_pc', label: 'Okosan összerakott, erős ár-érték arányú gép + jó hűtés', icon: 'fa-scale-balanced', archetype: 'budget' },
+                    { value: 'crazy_mod', label: 'Valami totál őrült egyedi modding / kézi konzol / extrém kiegészítő', icon: 'fa-rocket', archetype: 'chaos' }
+                ],
+                meme: `
+                    <div class="meme-panel p-4 flex items-center justify-between gap-4 border-amber-500/40">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-3xl shrink-0">
+                                💸
+                            </div>
+                            <div>
+                                <div class="meme-impact text-amber-300 text-base sm:text-lg tracking-wide">„SHUT UP AND TAKE MY MONEY!”</div>
+                                <div class="text-xs text-slate-300 mt-0.5">Amikor meglátod a csúcskártya árát, de a marketinges már elhitette, hogy nélküle nem élsz teljes életet.</div>
+                            </div>
+                        </div>
+                        <span class="hidden sm:inline-block px-3 py-1 rounded-lg bg-amber-500/20 text-xs font-mono text-amber-200">#PénztárcaSírás</span>
+                    </div>
+                `
+            },
+            {
+                id: 'q7_story',
+                category: '1. rész • Gép- és vásárlós sztorik (Feleletmegadós)',
+                title: 'Mi a legviccesebb vagy legfájdalmasabb gép- / vásárlós sztorid?',
+                subtitle: 'Pl. nem fért be a házba az új alkatrész, elfelejtetted felkapcsolni a tápot, vagy túl drága lett a kosár. (Opcionális)',
+                type: 'textarea',
+                requiredText: false,
+                placeholder: 'Írd ide röviden (akár egyetlen vicces mondatban is)...'
+            },
+            {
+                id: 'q8_rog_premium',
+                category: '2. rész • Marketing (Ár & Márkaérték)',
+                title: 'Miért hajlandó valaki 10–15%-kal többet fizetni egy ASUS ROG cuccért, mint egy hasonló tudású más márkáért?',
+                subtitle: 'Több választ is bejelölhetsz! (Előadás: Márkaérték, Maslow és fogyasztói magatartás)',
+                type: 'multiple',
+                options: [
+                    { value: 'prestige', label: 'Mert a ROG logó ad egy láthatatlan +10% presztízst és státuszt (Maslow 4. szint)', archetype: 'rog' },
+                    { value: 'rgb', label: 'Mert az Aura Sync RGB fények nélkül a gép olyan, mint a leves só nélkül', archetype: 'rog' },
+                    { value: 'ecosystem', label: 'Mert bízik a mérnöki minőségben és az egységes ökoszisztémában', archetype: 'proart' },
+                    { value: 'no_research', label: 'Mert nem nézett elég ár-összehasonlítást vásárlás előtt (és most fáj)', archetype: 'budget' }
+                ],
+                meme: `
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 meme-panel p-3">
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-rose-950/35 border border-rose-500/30">
+                            <span class="text-2xl">🙅‍♂️</span>
+                            <div class="text-xs">
+                                <span class="text-rose-400 font-bold block">„UGYANAZ A TUDÁS OLCSÓBBAN”</span>
+                                <span class="text-slate-300">Sima doboz, nulla felhajtás, pénztárcabarát.</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-2.5 rounded-xl bg-sky-950/40 border border-sky-400/35">
+                            <span class="text-2xl">✨</span>
+                            <div class="text-xs">
+                                <span class="text-sky-300 font-bold block">„ROG FELIRAT + VILLOGÁS”</span>
+                                <span class="text-slate-200 font-semibold">Az agy azonnal kitalálja, miért éri meg a felárat!</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'q9_psychological_price',
+                category: '2. rész • Marketing (Lélektani árképzés)',
+                title: 'Lélektani árképzés – teszteljük az agyadat! Melyik ár tűnik optikailag „barátibbnak” egy 40 ezres egérnél?',
+                subtitle: 'Válassz egyet, és figyeld meg, mit súg az ösztönöd!',
+                type: 'single',
+                options: [
+                    { value: '39990', label: '39 990 Ft (még „39-cel kezdődik”, nem 40-nel – klasszikus küszöbár)', icon: 'fa-tag', archetype: 'meme_excuse' },
+                    { value: '40000', label: '40 000 Ft (kerek, őszinte, nem néz hülyének a 10 forintos trükkel)', icon: 'fa-check-double', archetype: 'budget' }
+                ],
+                meme: `
+                    <div class="meme-panel p-4 flex flex-col sm:flex-row items-center justify-around gap-3 text-center">
+                        <div class="px-4 py-2 rounded-xl bg-rose-500/15 border border-rose-500/40 w-full sm:w-auto">
+                            <div class="text-xs text-rose-300 font-bold">„40 000 FT”</div>
+                            <div class="meme-impact text-rose-400 text-lg">FÁJ. SOK. DRÁGA.</div>
+                        </div>
+                        <div class="text-sky-400 font-black text-xl">VS</div>
+                        <div class="px-4 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 w-full sm:w-auto">
+                            <div class="text-xs text-emerald-300 font-bold">„39 990 FT”</div>
+                            <div class="meme-impact text-emerald-400 text-lg">SZINTE INGYEN VAN!</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'q10_bcg',
+                category: '2. rész • Marketing (BCG-mátrix • Kvíz)',
+                title: 'Az előadás szerint melyik termék a „Döglött kutya” (Dog) a BCG-mátrixban?',
+                subtitle: 'Csökkenő piac + alacsony piaci részesedés = már szinte senki sem keresi!',
+                type: 'single',
+                isKnowledge: true,
+                correctValue: 'dvd',
+                options: [
+                    { value: 'oled', label: 'ASUS ROG OLED gamer monitorok (Sztár)' },
+                    { value: 'tuf_mb', label: 'ASUS TUF / Prime alaplapok (Fejős tehén)' },
+                    { value: 'dvd', label: 'GIGABYTE külső DVD-írók (Optikai meghajtók)' },
+                    { value: 'claw', label: 'MSI Claw hordozható kézi konzol (Kérdőjel)' }
+                ],
+                meme: `
+                    <div class="meme-panel p-4 flex items-center justify-between gap-4 border-rose-500/40">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-14 h-14 rounded-2xl bg-rose-500/20 border border-rose-400/50 flex items-center justify-center text-3xl shrink-0">
+                                🐶🔥
+                            </div>
+                            <div>
+                                <div class="meme-impact text-rose-300 text-base">„THIS IS FINE.”</div>
+                                <div class="text-xs text-slate-300 mt-0.5">A külső DVD-író a polc alján, miközben már a pendrive is lassan nosztalgia.</div>
+                            </div>
+                        </div>
+                        <span class="hidden sm:inline-block px-3 py-1 rounded-lg bg-rose-500/20 text-xs font-mono text-rose-200">BCG: DOG</span>
+                    </div>
+                `
+            },
+            {
+                id: 'q11_pricing_trick',
+                category: '2. rész • Marketing (Árpolitika • Kvíz)',
+                title: 'Milyen lélektani árképzési trükköt alkalmaz az ASUS, amikor az 549 990 Ft-os ROG Strix mellé kirakja a 469 990 Ft-os TUF modellt?',
+                subtitle: 'Emlékszel a 12. diára? Melyik fogalom ez?',
+                type: 'single',
+                isKnowledge: true,
+                correctValue: 'anchoring',
+                options: [
+                    { value: 'anchoring', label: 'Árhorgonyzás (Anchoring) – a drágábbhoz képest a TUF olcsóbbnak tűnik' },
+                    { value: 'bundling', label: 'Csomagárazás (Bundling) – ingyen játékot adnak mellé' },
+                    { value: 'skimming', label: 'Dömpingár – önköltség alatti eladás' },
+                    { value: 'free', label: 'Jótékonysági akció a gamerekért' }
+                ]
+            },
+            {
+                id: 'q12_channel',
+                category: '2. rész • Marketing (Kommunikáció • Feleletmegadós)',
+                title: 'Szerinted melyik reklámcsatorna talál be legjobban a gamereknél?',
+                subtitle: 'Pl. YouTube tesztek, Twitch streamerek, TikTok, Discord, vagy a haverok véleménye? (Opcionális)',
+                type: 'text',
+                requiredText: false,
+                placeholder: 'Írd be, te hol nézel utána egy új kütyünek...'
+            },
+            {
+                id: 'q13_subbrand',
+                category: '3. rész • Személyiség & Almárkák',
+                title: 'Melyik ASUS-almárka vagy gépész-stílus áll hozzád a legközelebb?',
+                subtitle: 'Ez erősen meghatározza a végső címedet!',
+                type: 'single',
+                options: [
+                    { value: 'rog', label: 'ROG: „Legyen a legjobb, a leglátványosabb – ártól függetlenül!”', icon: 'fa-crown', archetype: 'rog' },
+                    { value: 'tuf', label: 'TUF Gaming: „Strapabíró, megbízható, jó ár-érték arány – bírja a strapát!”', icon: 'fa-shield-halved', archetype: 'budget' },
+                    { value: 'proart', label: 'ProArt: „Letisztult, profi, felesleges RGB villogás nélkül – a munka számít.”', icon: 'fa-pen-nib', archetype: 'proart' },
+                    { value: 'chaos', label: 'Káosz-széria: „Ami épp működik, vagy amit sikerült leárazva kifogni!”', icon: 'fa-bolt', archetype: 'chaos' }
+                ]
+            },
+            {
+                id: 'q14_marketing_one_liner',
+                category: '3. rész • Záró gondolat (Feleletmegadós)',
+                title: 'Ha egyetlen mondatban kellene összefoglalnod, mitől lesz jó egy marketingkampány?',
+                subtitle: 'Lehet komoly marketinges gondolat vagy egy jó poén is! (Opcionális)',
+                type: 'text',
+                requiredText: false,
+                placeholder: 'Pl. Ha elhiteti, hogy nélküle lassabb a gépem, már nyert is...'
+            },
+            {
+                id: 'q15_aida',
+                category: '3. rész • Villámkvíz (AIDA-modell)',
+                title: 'Az AIDA-modellben mit jelent az utolsó „A” betű (Action)?',
+                subtitle: 'Attention (Figyelem) -> Interest (Érdeklődés) -> Desire (Vágy) -> ...?',
+                type: 'single',
+                isKnowledge: true,
+                correctValue: 'action',
+                options: [
+                    { value: 'action', label: 'Cselekvés (Vásárlás / „Kosárba teszem” gomb megnyomása)' },
+                    { value: 'algorithm', label: 'Algoritmus (A TikTok For You oldala)' },
+                    { value: 'asus', label: 'ASUS (Mert minden út oda vezet)' },
+                    { value: 'abandon', label: 'Kosárelhagyás (Amikor meglátod a végösszeget)' }
+                ]
+            }
+        ];
+
+        // ==========================================
+        // ÁLLAPOT, ARCHETÍPUSOK ÉS TÁROLÁSI KULCSOK
+        // ==========================================
+        const STORAGE_KEY = 'degtk_rgb_jozan_esz_responses_v1';
+        const COMMUNITY_KEY = 'degtk_rgb_jozan_esz_community_v1';
+
+        const defaultCommunityEntries = [
+            {
+                category: 'game',
+                label: 'Legtöbbet játszott játék',
+                text: 'Counter-Strike 2 – „már csak egy ranked meccs”, aztán megint hajnal 2 lett.'
+            },
+            {
+                category: 'game',
+                label: 'Legtöbbet játszott játék',
+                text: 'Baldur’s Gate 3 és egy kis Excel-táblázat a zh-hoz.'
+            },
+            {
+                category: 'story',
+                label: 'Gép- / vásárlós sztori',
+                text: 'Megvettem a hatalmas háromventilátoros videokártyát, aztán kiderült, hogy az üveglapot már nem tudom rácsukni a gépházra.'
+            },
+            {
+                category: 'story',
+                label: 'Kábelrengeteg & asztal',
+                text: 'Elölről egészen vállalható, hátulról viszont egy komplett kábel-dzsungel.'
+            },
+            {
+                category: 'marketing',
+                label: 'Legjobb reklámcsatorna',
+                text: 'Őszinte YouTube-tesztek és FPS-összehasonlítások, plusz a Discord-csapat véleménye.'
+            },
+            {
+                category: 'marketing',
+                label: 'Marketing egy mondatban',
+                text: 'Ha elhiteti veled, hogy az új cucc nélkül lassabb a gép és kevesebb az FPS, már fél siker.'
+            }
+        ];
+
+        const archetypes = {
+            rog: {
+                title: 'ASUS ROG Presztízsvadász',
+                icon: 'fa-crown',
+                color: 'text-sky-400',
+                desc: 'Számodra a gép nem pusztán egy eszköz, hanem státuszszimbólum és élményközpont. Ha világít, ha ROG, és ha pörög rajta minden, a pénztárcád csak másodlagos.'
+            },
+            tuf: {
+                title: 'TUF Strapabíró Pragmatikus',
+                icon: 'fa-shield-halved',
+                color: 'text-emerald-400',
+                desc: 'Nem dőlsz be minden felesleges csicsának: azt szereted, ami stabil, hűvös marad, és hosszú távon is bírja a mindennapi hajtást.'
+            },
+            proart: {
+                title: 'ProArt Letisztult Mester',
+                icon: 'fa-pen-nib',
+                color: 'text-indigo-400',
+                desc: 'A szivárványos villogás helyett a minőség, a pontos megjelenítés és a rendezett működés számít neked – legyen szó alkotáseről vagy nyugodt gépészkedésről.'
+            },
+            budget: {
+                title: 'Józannak Maradt Ár-Érték Bajnok',
+                icon: 'fa-scale-balanced',
+                color: 'text-amber-400',
+                desc: 'Átlátod a marketingtrükköket, nem ugrasz fel minden akcióra, és mindig a legjobb ár-érték arányt keresed, hogy maradjon pénz másra is.'
+            },
+            boeing: {
+                title: 'Sugárhajtású Ventilátor-Pilóta',
+                icon: 'fa-plane-departure',
+                color: 'text-rose-400',
+                desc: 'Amikor terhelés alá kerül a gép, a környezeted azonnal tudja, hogy elindult a játék vagy a renderelés. A hűtés és a hőmérséklet nálad mindennapi téma.'
+            },
+            chaos: {
+                title: 'Káosz & Alkalmi Kalandor',
+                icon: 'fa-bolt',
+                color: 'text-purple-400',
+                desc: 'Nálad sosem kiszámítható a forgatókönyv: hol órákig eltűnsz a gép előtt, hol napokig rá sem nézel, és mindig belefér egy váratlan csavar.'
+            },
+            meme_excuse: {
+                title: 'Kifogás- és Lélektani Szakértő',
+                icon: 'fa-face-laugh-squint',
+                color: 'text-cyan-300',
+                desc: 'Pontosan érzed, hogyan hat az emberi agyra a 39 990 Ft-os árképzés – és ha valami nem jön össze a meccsen, a kifogás mindig kéznél van.'
+            }
+        };
+
+        let currentStep = 0;
+        let userAnswers = {};
+        let communityFilter = 'all';
+
+        // ==========================================
+        // INICIALIZÁLÁS
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            seedCommunityIfEmpty();
+            updateHeaderBadge();
+        });
+
+        function seedCommunityIfEmpty() {
+            try {
+                const existing = JSON.parse(localStorage.getItem(COMMUNITY_KEY));
+                if (!Array.isArray(existing) || existing.length === 0) {
+                    localStorage.setItem(COMMUNITY_KEY, JSON.stringify(defaultCommunityEntries));
+                }
+            } catch {
+                localStorage.setItem(COMMUNITY_KEY, JSON.stringify(defaultCommunityEntries));
+            }
+        }
+
+        function getCommunityEntries() {
+            try {
+                return JSON.parse(localStorage.getItem(COMMUNITY_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveResponseToStorage(entry) {
+            const list = getStoredResponses();
+            list.unshift(entry);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            updateHeaderBadge();
+        }
+
+        function updateHeaderBadge() {
+            const count = getStoredResponses().length;
+            document.getElementById('header-response-badge').textContent = count;
+        }
+
+        function openStatsModal() {
+            const list = getStoredResponses();
+            document.getElementById('stats-total-count').textContent = list.length;
+            const content = document.getElementById('stats-content');
+
+            if (list.length === 0) {
+                content.innerHTML = `
+                    <div class="text-center py-8 space-y-2">
+                        <i class="fa-solid fa-inbox text-4xl text-slate-600"></i>
+                        <p class="text-slate-400 text-sm">Még nincs kitöltött válasz ezen az eszközön.<br>Töltsd ki a kérdőívet, és itt megjelennek a grafikonok!</p>
+                    </div>
+                `;
+            } else {
+                // Archetípus megoszlás számítása
+                const counts = { rog: 0, tuf: 0, proart: 0, budget: 0 };
+                list.forEach(item => {
+                    if (counts[item.archetype] !== undefined) counts[item.archetype]++;
+                });
+
+                const barsHtml = Object.entries(archetypes).map(([key, info]) => {
+                    const c = counts[key];
+                    const pct = Math.round((c / list.length) * 100);
+                    return `
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-bold">
+                                <span class="text-slate-200">${info.title}</span>
+                                <span class="text-sky-400">${c} fő (${pct}%)</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-sky-400 to-indigo-500 rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                const recentGames = list.slice(0, 6).map(item => `
+                    <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <div>
+                            <span class="text-sky-400 font-bold">🎮 ${escapeHtml(item.game)}</span>
+                            <span class="text-slate-500 mx-1">•</span>
+                            <span class="text-slate-300">${escapeHtml(item.archetypeTitle)}</span>
+                        </div>
+                        <span class="text-slate-500 font-mono">${item.timestamp}</span>
+                    </div>
+                `).join('');
+
+                content.innerHTML = `
+                    <div class="space-y-3">
+                        <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Személyiség-típusok megoszlása</h4>
+                        ${barsHtml}
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Beküldött játékok és válaszok</h4>
+                        <div class="space-y-2">${recentGames}</div>
+                    </div>
+                `;
+            }
+
+            const modal = document.getElementById('modal-stats');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeStatsModal() {
+            const modal = document.getElementById('modal-stats');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function clearStats() {
+            localStorage.removeItem(STORAGE_KEY);
+            updateHeaderBadge();
+            openStatsModal();
+            showToast('Előadói statisztika törölve.');
+        }
+
+        // ==========================================
+        // KVÍZ NAVIGÁCIÓ ÉS RENDERELÉS
+        // ==========================================
+        function goHome() {
+            document.getElementById('screen-start').classList.remove('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+        }
+
+        function startQuiz() {
+            currentStep = 0;
+            userAnswers = {};
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentStep];
+            const container = document.getElementById('question-container');
+
+            // Haladásjelző frissítése
+            document.getElementById('question-category').textContent = q.category;
+            document.getElementById('question-counter').textContent = `${currentStep + 1} / ${questions.length} kérdés`;
+            document.getElementById('quiz-progress').style.width = `${((currentStep + 1) / questions.length) * 100}%`;
+
+            // Gombok állapota
+            document.getElementById('btn-prev').disabled = currentStep === 0;
+            document.getElementById('btn-next-text').textContent = (currentStep === questions.length - 1) ? 'Eredmény megtekintése' : 'Következő';
+
+            let html = `
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <h2 class="text-xl sm:text-2xl font-black text-white leading-snug">${currentStep + 1}. ${q.title}</h2>
+                        ${(q.type === 'text' || q.type === 'textarea') ? '<span class="text-[11px] font-bold uppercase px-2.5 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 shrink-0">Opcionális</span>' : ''}
+                    </div>
+                    <p class="text-sm text-slate-400">${q.subtitle}</p>
+                </div>
+            `;
+
+            // Ha van vizuális mém a kérdéshez
+            if (q.meme) {
+                html += `<div class="my-2">${q.meme}</div>`;
+            }
+
+            // Válaszmezők típus szerint
+            if (q.type === 'text') {
+                const savedVal = userAnswers[q.id] || '';
+                html += `
+                    <div class="pt-2 space-y-2">
+                        <input type="text" id="input-${q.id}" value="${escapeHtml(savedVal)}"
+                            placeholder="${escapeHtml(q.placeholder)}"
+                            oninput="saveTextAnswer('${q.id}', this.value)"
+                            class="w-full px-4 py-4 rounded-xl bg-slate-900/90 border-2 border-slate-700 focus:border-sky-400 text-white placeholder-slate-500 outline-none text-base transition">
+                        <p id="inline-validation-${q.id}" class="text-xs text-amber-300 hidden"></p>
+                    </div>
+                `;
+            } else if (q.type === 'textarea') {
+                const savedVal = userAnswers[q.id] || '';
+                html += `
+                    <div class="pt-2 space-y-2">
+                        <textarea id="input-${q.id}" rows="3"
+                            placeholder="${escapeHtml(q.placeholder)}"
+                            oninput="saveTextAnswer('${q.id}', this.value)"
+                            class="w-full px-4 py-3.5 rounded-xl bg-slate-900/90 border-2 border-slate-700 focus:border-sky-400 text-white placeholder-slate-500 outline-none text-base transition">${escapeHtml(savedVal)}</textarea>
+                        <p id="inline-validation-${q.id}" class="text-xs text-amber-300 hidden"></p>
+                    </div>
+                `;
+            } else if (q.type === 'single' || q.type === 'single_with_other') {
+                const selectedVal = userAnswers[q.id];
+                html += `<div class="space-y-3 pt-1">`;
+                q.options.forEach(opt => {
+                    const isSelected = selectedVal === opt.value;
+                    html += `
+                        <button type="button" onclick="selectSingleOption('${q.id}', '${opt.value}')"
+                            class="option-btn w-full p-4 rounded-xl bg-slate-900/85 border-2 ${isSelected ? 'selected border-sky-400' : 'border-slate-800'} text-left flex items-center gap-3.5">
+                            <div class="w-9 h-9 rounded-lg ${isSelected ? 'bg-sky-500 text-slate-950' : 'bg-slate-800 text-sky-400'} flex items-center justify-center shrink-0 font-bold">
+                                <i class="fa-solid ${opt.icon || 'fa-check'}"></i>
+                            </div>
+                            <span class="text-sm sm:text-base font-semibold text-slate-100">${escapeHtml(opt.label)}</span>
+                        </button>
+                    `;
+                });
+
+                if (q.type === 'single_with_other') {
+                    const otherSelected = selectedVal === '__other__';
+                    const otherText = userAnswers[`${q.id}_other`] || '';
+                    html += `
+                        <button type="button" onclick="selectSingleOption('${q.id}', '__other__')"
+                            class="option-btn w-full p-4 rounded-xl bg-slate-900/85 border-2 ${otherSelected ? 'selected border-sky-400' : 'border-slate-800'} text-left flex items-center gap-3.5">
+                            <div class="w-9 h-9 rounded-lg ${otherSelected ? 'bg-sky-500 text-slate-950' : 'bg-slate-800 text-amber-400'} flex items-center justify-center shrink-0 font-bold">
+                                <i class="fa-solid fa-pen"></i>
+                            </div>
+                            <span class="text-sm sm:text-base font-semibold text-slate-100">Egyéb saját ötlet (feleletmegadós)</span>
+                        </button>
+                        <div class="${otherSelected ? '' : 'hidden'} pt-1">
+                            <input type="text" id="input-${q.id}-other" value="${escapeHtml(otherText)}"
+                                placeholder="Írd be, te mit vennél 1 millió forintból..."
+                                oninput="saveOtherAnswer('${q.id}', this.value)"
+                                class="w-full px-4 py-3 rounded-xl bg-slate-900 border-2 border-slate-700 focus:border-sky-400 text-white placeholder-slate-500 outline-none text-sm sm:text-base transition">
+                        </div>
+                    `;
+                }
+                html += `</div>`;
+            } else if (q.type === 'multiple') {
+                const selectedList = Array.isArray(userAnswers[q.id]) ? userAnswers[q.id] : [];
+                html += `<div class="space-y-3 pt-1">`;
+                q.options.forEach(opt => {
+                    const isChecked = selectedList.includes(opt.value);
+                    html += `
+                        <button type="button" onclick="toggleMultipleOption('${q.id}', '${opt.value}')"
+                            class="option-btn w-full p-4 rounded-xl bg-slate-900/85 border-2 ${isChecked ? 'selected border-sky-400' : 'border-slate-800'} text-left flex items-center gap-3.5">
+                            <div class="w-6 h-6 rounded-md border-2 ${isChecked ? 'bg-sky-500 border-sky-400 text-slate-950' : 'border-slate-600 bg-slate-800'} flex items-center justify-center shrink-0 text-xs font-black">
+                                ${isChecked ? '<i class="fa-solid fa-check"></i>' : ''}
+                            </div>
+                            <span class="text-sm sm:text-base font-semibold text-slate-100">${escapeHtml(opt.label)}</span>
+                        </button>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // ==========================================
+        // VÁLASZOK MENTÉSE ÉS VALIDÁLÁSA
+        // ==========================================
+        function saveTextAnswer(qId, val) {
+            userAnswers[qId] = val;
+            const inlineErr = document.getElementById(`inline-validation-${qId}`);
+            if (inlineErr) {
+                inlineErr.classList.add('hidden');
+            }
+        }
+
+        function saveOtherAnswer(qId, val) {
+            userAnswers[`${qId}_other`] = val;
+        }
+
+        function selectSingleOption(qId, value) {
+            userAnswers[qId] = value;
+            renderQuestion();
+        }
+
+        function toggleMultipleOption(qId, value) {
+            const current = Array.isArray(userAnswers[qId]) ? [...userAnswers[qId]] : [];
+            const idx = current.indexOf(value);
+            if (idx > -1) {
+                current.splice(idx, 1);
+            } else {
+                current.push(value);
+            }
+            userAnswers[qId] = current;
+            renderQuestion();
+        }
+
+        function validateCurrentQuestion(q) {
+            if (q.type === 'text' || q.type === 'textarea') {
+                const raw = (userAnswers[q.id] || '').trim();
+                const inlineErr = document.getElementById(`inline-validation-${q.id}`);
+                if (inlineErr) {
+                    inlineErr.classList.add('hidden');
+                }
+                userAnswers[q.id] = raw;
+                return true;
+            }
+
+            if (q.type === 'single_with_other' && userAnswers[q.id] === '__other__') {
+                const otherVal = (userAnswers[`${q.id}_other`] || '').trim();
+                userAnswers[`${q.id}_other`] = otherVal;
+            }
+
+            return true;
+        }
+
+        function prevQuestion() {
+            if (currentStep > 0) {
+                currentStep--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            const q = questions[currentStep];
+            if (!validateCurrentQuestion(q)) return;
+
+            if (currentStep < questions.length - 1) {
+                currentStep++;
+                renderQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        // ==========================================
+        // KIÉRTÉKELÉS, TÁROLÁS ÉS KÖZÖSSÉGI FAL
+        // ==========================================
+        function computeArchetypeKey() {
+            const scores = {
+                rog: 0,
+                budget: 0,
+                boeing: 0,
+                meme_excuse: 0,
+                proart: 0,
+                chaos: 0
+            };
+
+            questions.forEach(q => {
+                const ans = userAnswers[q.id];
+                if (!ans || !q.options) return;
+
+                if (q.type === 'single' || q.type === 'single_with_other') {
+                    const found = q.options.find(o => o.value === ans);
+                    if (found && found.archetype && scores[found.archetype] !== undefined) {
+                        scores[found.archetype] += 1;
+                    }
+                } else if (q.type === 'multiple' && Array.isArray(ans)) {
+                    ans.forEach(val => {
+                        const found = q.options.find(o => o.value === val);
+                        if (found && found.archetype && scores[found.archetype] !== undefined) {
+                            scores[found.archetype] += 1;
+                        }
+                    });
+                }
+            });
+
+            if (userAnswers.q13_subbrand === 'rog') scores.rog += 1.5;
+            if (userAnswers.q13_subbrand === 'tuf') scores.budget += 1.5;
+            if (userAnswers.q13_subbrand === 'proart') scores.proart += 1.5;
+            if (userAnswers.q13_subbrand === 'chaos') scores.chaos += 1.5;
+
+            let bestKey = 'rog';
+            let bestScore = -1;
+            Object.entries(scores).forEach(([key, sc]) => {
+                if (sc > bestScore) {
+                    bestScore = sc;
+                    bestKey = key;
+                }
+            });
+
+            return bestKey;
+        }
+
+        function finishQuiz() {
+            const archKey = computeArchetypeKey();
+            const arch = archetypes[archKey] || archetypes.rog;
+
+            // Tudás-kérdések pontozása
+            const knowledgeQuestions = questions.filter(q => q.isKnowledge);
+            let correctCount = 0;
+            knowledgeQuestions.forEach(kq => {
+                if (userAnswers[kq.id] === kq.correctValue) {
+                    correctCount++;
+                }
+            });
+
+            // Eredmény kártya frissítése
+            document.getElementById('result-icon').innerHTML = `<i class="fa-solid ${arch.icon} ${arch.color}"></i>`;
+            document.getElementById('result-title').textContent = arch.title;
+            document.getElementById('result-desc').textContent = arch.desc;
+            document.getElementById('quiz-score-val').textContent = correctCount;
+
+            const scoreComment = document.getElementById('quiz-score-comment');
+            if (correctCount === knowledgeQuestions.length) {
+                scoreComment.textContent = 'Hibátlan marketing-radar! BCG, árhorgonyzás és AIDA pipa!';
+            } else if (correctCount > 0) {
+                scoreComment.textContent = 'Szép munka! Az alapok már szépen megvannak.';
+            } else {
+                scoreComment.textContent = 'A gépész-ösztön erősebb volt, mint a tankönyv – így is szuper!';
+            }
+
+            // Saját feleletmegadós válaszok ellenőrzése és megjelenítése
+            const openFieldSpecs = [
+                { id: 'q1_game', cat: 'game', label: 'Legtöbbet játszott játék' },
+                { id: 'q5_cables', cat: 'story', label: 'Kábelrengeteg & asztal' },
+                { id: 'q7_story', cat: 'story', label: 'Gép- / vásárlós sztori' },
+                { id: 'q12_channel', cat: 'marketing', label: 'Legjobb reklámcsatorna' },
+                { id: 'q14_marketing_one_liner', cat: 'marketing', label: 'Marketing egy mondatban' }
+            ];
+
+            const customListEl = document.getElementById('custom-answers-list');
+            const validatedEntries = [];
+
+            openFieldSpecs.forEach(spec => {
+                const rawVal = (userAnswers[spec.id] || '').trim();
+                if (rawVal.length > 0) {
+                    validatedEntries.push({
+                        category: spec.cat,
+                        label: spec.label,
+                        text: rawVal
+                    });
+                }
+            });
+
+            if (userAnswers.q6_million === '__other__' && (userAnswers.q6_million_other || '').trim().length > 0) {
+                validatedEntries.push({
+                    category: 'story',
+                    label: '1 milliós PC-ötlet',
+                    text: userAnswers.q6_million_other.trim()
+                });
+            }
+
+            document.getElementById('validation-summary-badge').textContent =
+                validatedEntries.length > 0
+                    ? `${validatedEntries.length} kitöltött válasz a névtelen falon`
+                    : 'Nem írtál szöveget (üres mezők kihagyva)';
+
+            customListEl.innerHTML = validatedEntries.length > 0
+                ? validatedEntries.map(item => `
+                    <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+                        <div class="text-xs font-bold text-sky-400 uppercase tracking-wider">${escapeHtml(item.label)}</div>
+                        <div class="text-sm text-slate-100 font-medium break-words">„${escapeHtml(item.text)}”</div>
+                    </div>
+                `).join('')
+                : `<div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800/80 text-sm text-slate-400 col-span-2">
+                    Most kihagytad a feleletmegadós részeket – teljesen oké! Ha legközelebb írsz valamit, a névtelen falon is megjelenik.
+                </div>`;
+
+            // Csak a ténylegesen kitöltött szöveges válaszok kerülnek be a névtelen közösségi falra
+            if (validatedEntries.length > 0) {
+                const existingCommunity = getCommunityEntries();
+                const newItems = validatedEntries.map(entry => ({
+                    category: entry.category,
+                    label: entry.label,
+                    text: entry.text
+                }));
+                if (newItems.length > 0) {
+                    const updatedCommunity = [...newItems, ...existingCommunity].slice(0, 40);
+                    localStorage.setItem(COMMUNITY_KEY, JSON.stringify(updatedCommunity));
+                }
+            }
+
+            // Előadói statisztika mentése
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            saveResponseToStorage({
+                archetype: archKey,
+                archetypeTitle: arch.title,
+                game: userAnswers.q1_game || 'Nem adott meg játékot',
+                score: correctCount,
+                timestamp: timeStr
+            });
+
+            renderCommunityWall();
+
+            // Képernyőváltás
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setCommunityFilter(filter) {
+            communityFilter = filter;
+            document.querySelectorAll('.comm-filter-btn').forEach(btn => {
+                const active = btn.getAttribute('data-filter') === filter;
+                btn.className = active
+                    ? 'comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-500 text-white transition'
+                    : 'comm-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
+            });
+            renderCommunityWall();
+        }
+
+        function renderCommunityWall() {
+            const grid = document.getElementById('community-answers-grid');
+            if (!grid) return;
+
+            const all = getCommunityEntries();
+            const filtered = communityFilter === 'all'
+                ? all
+                : all.filter(item => item.category === communityFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="text-xs text-slate-400 col-span-2">Ebben a kategóriában még nincs névtelen válasz.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800/90 space-y-1.5">
+                    <div class="flex items-center justify-between gap-2 text-[11px] font-bold">
+                        <span class="text-indigo-300">${escapeHtml(item.label)}</span>
+                        <span class="text-slate-500 font-mono">Névtelen</span>
+                    </div>
+                    <p class="text-sm text-slate-200 leading-relaxed break-words">„${escapeHtml(item.text)}”</p>
+                </div>
+            `).join('');
+        }
+
+        function copyResultText() {
+            const title = document.getElementById('result-title').textContent;
+            const score = document.getElementById('quiz-score-val').textContent;
+            const game = userAnswers.q1_game ? ` | Kedvenc játék: ${userAnswers.q1_game}` : '';
+            const text = `RGB vagy JÓZAN ÉSZ? kvíz eredményem: ${title} (Marketing kvíz: ${score}/3${game}) – DE-GTK Marketing`;
+            copyToClipboard(text, 'Eredmény vágólapra másolva!');
+        }
+
+        // ==========================================
+        // QR-KÓD GENERÁLÁS ÉS MODÁLIS KEZELÉS
+        // ==========================================
+        function getShareableUrl() {
+            try {
+                const href = window.location.href;
+                if (!href || href.startsWith('blob:') || href.startsWith('file:')) {
+                    return window.location.origin && window.location.origin !== 'null'
+                        ? window.location.href
+                        : 'https://example.com/rgb-vagy-jozan-esz-kviz';
+                }
+                return href;
+            } catch {
+                return 'https://example.com/rgb-vagy-jozan-esz-kviz';
+            }
+        }
+
+        function initQrCode() {
+            const url = getShareableUrl();
+            const input = document.getElementById('qr-url-input');
+            const qrContainer = document.getElementById('qrcode');
+            const warning = document.getElementById('local-url-warning');
+
+            if (input) input.value = url;
+
+            const isLocalOrBlob = window.location.protocol === 'file:' ||
+                window.location.href.startsWith('blob:') ||
+                window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1';
+
+            if (warning) {
+                warning.classList.toggle('hidden', !isLocalOrBlob);
+            }
+
+            if (qrContainer && typeof QRCode !== 'undefined') {
+                qrContainer.innerHTML = '';
+                try {
+                    new QRCode(qrContainer, {
+                        text: url,
+                        width: 192,
+                        height: 192,
+                        colorDark: '#090d16',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.M
+                    });
+                } catch {
+                    qrContainer.innerHTML = `<p class="text-xs text-slate-900 p-4 font-mono break-all">${escapeHtml(url)}</p>`;
+                }
+            }
+        }
+
+        function openQrModal() {
+            initQrCode();
+            const modal = document.getElementById('modal-qr');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQrModal() {
+            const modal = document.getElementById('modal-qr');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function copyUrl() {
+            const input = document.getElementById('qr-url-input');
+            if (!input) return;
+            copyToClipboard(input.value, 'Link vágólapra másolva!');
+        }
+
+        function copyToClipboard(text, successMsg) {
+            try {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast(successMsg, 'ok');
+            } catch {
+                showToast('Másolás nem sikerült, jelöld ki kézzel a linket.', 'warn');
+            }
+        }
+
+        // ==========================================
+        // SEGÉDFÜGGVÉNYEK
+        // ==========================================
+        function getStoredResponses() {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        let toastTimeout = null;
+        function showToast(message, type = 'ok') {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-msg');
+            const iconEl = document.getElementById('toast-icon');
+            if (!toast || !msgEl || !iconEl) return;
+
+            msgEl.textContent = message;
+            iconEl.className = type === 'warn'
+                ? 'fa-solid fa-triangle-exclamation text-amber-400'
+                : 'fa-solid fa-circle-check text-emerald-400';
+
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
